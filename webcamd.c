@@ -698,6 +698,7 @@ pidfile_create(int bus, int addr, int index)
 	if (local_pid == NULL) {
 		return (EEXIST);
 	} else {
+		/* in case called from kernel/linux_usb.c:usb_linux_probe_p() */
 		pidfile_write(local_pid);
 	}
 
@@ -855,6 +856,7 @@ main(int argc, char **argv)
 		}
 		if (daemon(0, 0) != 0)
 			v4b_errx(EX_USAGE, "Cannot daemonize");
+		pidfile_write(local_pid);
 	}
 	atexit(&v4b_exit);
 
